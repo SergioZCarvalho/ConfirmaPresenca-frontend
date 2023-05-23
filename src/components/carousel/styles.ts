@@ -3,6 +3,7 @@ import { Carousel } from 'react-bootstrap';
 import { styled } from 'styled-components';
 
 export const CarouselStyle = styled(Carousel)`
+  z-index: -1;
   border-radius: 25px;
   margin: 40px 0;
   background-color: #1a1a2e;
@@ -12,36 +13,45 @@ export const CarouselStyle = styled(Carousel)`
 `;
 
 export const CarouselCaption = styled(Carousel.Caption)`
-  display: flex;
+  padding-top: 3rem;
+  margin-left: 9.5rem;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #1a1a2e;
-  margin-left: 17rem;
   height: 100%;
-  top: 0;
-  left: 0;
+
   @media ${device.tablet} {
-    margin-left: 26rem;
+    padding-top: 4rem;
+    margin-left: 15rem;
   }
 `;
 
 export const Title = styled.p`
   color: #07bc67;
-  font-size: 1rem;
-  text-align: justify;
+  text-align: left;
   margin-bottom: 5px;
+  font-size: 0.7rem;
+
   @media ${device.tablet} {
+    font-size: 1rem;
+  }
+  @media ${device.laptopL} {
     font-size: 1.5rem;
   }
 `;
 
 export const Text = styled.p`
   color: #c0c0c0;
-  font-size: 1rem;
-  text-align: justify;
+
+  text-align: left;
   margin-bottom: 0;
+  font-size: 0.7rem;
+
   @media ${device.tablet} {
+    font-size: 1rem;
+  }
+  @media ${device.laptopL} {
     font-size: 1.5rem;
   }
 `;

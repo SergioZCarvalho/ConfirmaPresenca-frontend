@@ -19,26 +19,14 @@ const Login = () => {
 
         <S.links>
           <S.linkText>se esqueceu sua senha</S.linkText>
-          <S.linkRouter
-            href={{
-              pathname: '/auth',
-            }}
-          >
-            clique aqui
-          </S.linkRouter>
+          <S.linkRouter to="/auth/register">clique aqui</S.linkRouter>
         </S.links>
 
         <ButtonComponent text={'Entrar'}></ButtonComponent>
 
         <S.links>
           <S.linkText>caso não possua login </S.linkText>
-          <S.linkRouter
-            href={{
-              pathname: '/auth',
-            }}
-          >
-            clique aqui
-          </S.linkRouter>
+          <S.linkRouter to="/auth/register">clique aqui</S.linkRouter>
         </S.links>
       </S.FormContainer>
     </S.LoginContainer>

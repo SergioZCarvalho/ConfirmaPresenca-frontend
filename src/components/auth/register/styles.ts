@@ -1,4 +1,5 @@
 import { Form } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 export const RegisterContainer = styled.div`
@@ -63,7 +64,7 @@ export const linkText = styled.p`
   margin-left: 5px;
   color: #fff;
 `;
-export const linkRouter = styled.a`
+export const linkRouter = styled(Link)`
   margin-left: 5px;
   font-size: 1rem;
   color: #03be66;

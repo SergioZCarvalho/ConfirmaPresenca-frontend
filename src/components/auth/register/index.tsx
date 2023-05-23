@@ -29,7 +29,7 @@ const Register = () => {
 
         <S.links>
           <S.linkText>se ja possui login </S.linkText>
-          <S.linkRouter>clique aqui</S.linkRouter>
+          <S.linkRouter to="/auth">clique aqui</S.linkRouter>
         </S.links>
       </S.FormContainer>
     </S.RegisterContainer>
