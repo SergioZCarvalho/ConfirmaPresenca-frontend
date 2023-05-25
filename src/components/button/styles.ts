@@ -1,17 +1,22 @@
 import { Button } from 'react-bootstrap';
 import { styled } from 'styled-components';
 
-export const GenericButton = styled(Button)`
+export const GenericButton = styled(Button)<{
+  colorText: string;
+  colorButton: string;
+  colorAction: string;
+}>`
   border-radius: 10px;
   font-size: 1.4rem;
   padding: 1px 15px;
-  --bs-btn-active-bg: #060c21;
-  --bs-btn-active-border-color: #03bd64;
-  --bs-btn-active-color: #03bd64;
-  --bs-btn-bg: #03be66;
-  --bs-btn-border-color: #03be66;
-  --bs-btn-color: #060c21;
-  --bs-btn-hover-color: #060c21;
-  --bs-btn-hover-bg: #03bd64;
-  --bs-btn-hover-border-color: #03bd64;
+  margin: 10px;
+  --bs-btn-active-bg: ${(props) => props.colorText};
+  --bs-btn-active-border-color: ${(props) => props.colorAction};
+  --bs-btn-active-color: ${(props) => props.colorAction};
+  --bs-btn-bg: ${(props) => props.colorButton};
+  --bs-btn-border-color: ${(props) => props.colorButton};
+  --bs-btn-color: ${(props) => props.colorText};
+  --bs-btn-hover-color: ${(props) => props.colorText};
+  --bs-btn-hover-bg: ${(props) => props.colorAction};
+  --bs-btn-hover-border-color: ${(props) => props.colorAction};
 `;
