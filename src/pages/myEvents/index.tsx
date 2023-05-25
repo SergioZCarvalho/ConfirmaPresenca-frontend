@@ -1,15 +1,48 @@
-import { useNavigate } from 'react-router-dom';
 import * as S from './styles';
 import { useState } from 'react';
-import ButtonComponent from '@/components/button';
+
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import { Item, useContextMenu, ItemParams, TriggerEvent } from 'react-contexify';
+
+import 'react-contexify/ReactContexify.css';
+
+const MENU_ID = 'blahblah';
 
 const MyEvent = () => {
-  const navigate = useNavigate();
   const [show, setShow] = useState(false);
+  const { show: showContextMenu } = useContextMenu({
+    id: MENU_ID,
+  });
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleContextMenu = (event: TriggerEvent) => {
+    event.preventDefault();
+    showContextMenu({ event });
+  };
+
+  const handleItemClick = ({ event, props }: ItemParams) => {
+    // eslint-disable-next-line react/prop-types
+    const { id } = props;
+    switch (id) {
+      case 'Delete':
+        console.log(event, props);
+        break;
+      case 'update':
+        console.log(event, props);
+        break;
+      case 'view':
+        console.log(event, props);
+        break;
+      case 'preview':
+        console.log(event, props);
+        break;
+
+      default:
+        break;
+    }
+  };
 
   return (
     <>
@@ -19,10 +52,10 @@ const MyEvent = () => {
           <S.Title>Alok</S.Title>
           <S.information>21 de outubro</S.information>
           <S.information>Circo Aruja</S.information>
-          <ButtonComponent text="Ver lista de confirmados" onClick={handleShow} />
-          <ButtonComponent text="Pré-Visualizar evento" color="secondary" />
         </S.Content>
-        <S.Menu></S.Menu>
+        <S.MenuClosed>
+          <S.MenuIcon onClick={handleContextMenu} />
+        </S.MenuClosed>
       </S.Container>
 
       <S.confirmed show={show} onHide={handleClose} placement="bottom">
@@ -37,6 +70,21 @@ const MyEvent = () => {
           <p>confirmado 5</p>
         </S.BodyConfirmed>
       </S.confirmed>
+
+      <S.MenuOpen id={MENU_ID} animation="slide">
+        <Item id="view" onClick={handleShow}>
+          Ver confirmados
+        </Item>
+        <Item id="preview" onClick={handleItemClick}>
+          Visualizar evento
+        </Item>
+        <Item id="Delete" onClick={handleItemClick}>
+          Deletar
+        </Item>
+        <Item id="update" onClick={handleItemClick}>
+          Atualizar
+        </Item>
+      </S.MenuOpen>
     </>
   );
 };
