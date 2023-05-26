@@ -6,7 +6,12 @@ interface ButtonProps {
   color?: 'primary' | 'secondary' | 'danger';
 }
 
-const ButtonComponent = ({ text, onClick, color = 'primary' }: ButtonProps) => {
+const ButtonComponent = ({
+  text,
+  onClick,
+  color = 'primary',
+  ...props
+}: ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   const colorObj = {
     primary: {
       colorText: '#060c21',
@@ -25,7 +30,7 @@ const ButtonComponent = ({ text, onClick, color = 'primary' }: ButtonProps) => {
     },
   };
   return (
-    <S.GenericButton {...colorObj[color]} onClick={onClick}>
+    <S.GenericButton {...props} {...colorObj[color]} onClick={onClick}>
       {text}
     </S.GenericButton>
   );
