@@ -1,4 +1,3 @@
-import InviteConfirm from '@/components/InviteConfirm';
 import BottomTabs from '@/components/bottomTabs';
 import FooterComponent from '@/components/footer';
 import NavbarComponent from '@/components/navbar';
@@ -11,7 +10,7 @@ const RootLayout = () => {
       <NavbarComponent />
       <Outlet />
       {screen.width <= deviceSize.tablet && <BottomTabs />}
-      <InviteConfirm />
+
       <FooterComponent />
     </>
   );

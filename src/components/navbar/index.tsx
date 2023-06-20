@@ -4,14 +4,19 @@ import ButtonComponent from '../button';
 import Auth from '../auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '@/store';
 
 const NavbarComponent = () => {
   const navigate = useNavigate();
   const [load, setLoad] = useState(false);
+  const { user, logout } = useAuthStore();
 
   useEffect(() => {
     setLoad(true);
   }, []);
+
+  //criar funcao de handleLoginClick
+  // se user ? ir pra login, senao fazer logout
 
   return (
     <>
@@ -23,8 +28,9 @@ const NavbarComponent = () => {
             </Navbar.Brand>
             <Navbar.Text>
               <ButtonComponent
-                text="Entrar"
+                text={user ? 'Sair' : 'Entrar'}
                 onClick={() => {
+                  //chamar funcao que foi criada aqui
                   navigate('/auth');
                 }}
               ></ButtonComponent>

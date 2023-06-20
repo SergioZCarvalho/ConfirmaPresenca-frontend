@@ -29,7 +29,7 @@ export const HeaderSubtitle = styled.p`
   font-size: 1.6rem;
 `;
 
-export const FormContainer = styled(Form)`
+export const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
