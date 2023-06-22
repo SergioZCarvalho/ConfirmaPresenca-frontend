@@ -1,47 +1,49 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import * as S from './styles';
 import { Col } from 'react-bootstrap';
+import useLogic from './useLogic';
+import ButtonComponent from '@/components/button';
 
 const CreateEvent = () => {
-  const navigate = useNavigate();
-  const [isSingleDay, setIsSingleDay] = useState(false);
-  const [coverImage, setCoverImage] = useState<File | null>(null);
-  const [isEventPaid, setIsEventPaid] = useState(false);
-
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsSingleDay(event.target.checked);
-  };
-
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const fileInput = event.target;
-    if (fileInput && fileInput.files && fileInput.files.length > 0) {
-      const imageFile = fileInput.files[0];
-      setCoverImage(imageFile);
-    }
-  };
-
-  const handlePaidCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsEventPaid(event.target.checked);
-  };
+  const {
+    onSubmit,
+    register,
+    handleSubmit,
+    errors,
+    handlePaidCheckboxChange,
+    handleImageChange,
+    handleCheckboxChange,
+    isEventPaid,
+    isSingleDay,
+    isSubmitDisabled,
+  } = useLogic();
 
   return (
     <>
+      {Object.keys(errors)}
       <S.Container>
-        <S.FormContainer>
+        <S.FormContainer onSubmit={handleSubmit(onSubmit)}>
           <S.Group controlId="formGridImage">
             <S.Label>Imagem de Capa</S.Label>
             <S.Control type="file" onChange={handleImageChange} accept="image/*" />
           </S.Group>
           <S.Group controlId="formGridEventTitle">
             <S.Label>Nome do evento</S.Label>
-            <S.Control type="text" placeholder="Nome do evento" />
+            <S.Control type="text" placeholder="Nome do evento" {...register('name')} />
+            {errors.name && errors.name.message && <S.Error>{errors.name.message}</S.Error>}
           </S.Group>
           <S.Group controlId="formGridDescription">
             <S.Label>Descrição do evento</S.Label>
-            <S.Control as="textarea" rows={3} placeholder="Descrição do evento" />
+            <S.Control
+              as="textarea"
+              rows={3}
+              placeholder="Descrição do evento"
+              {...register('description')}
+            />
+            {errors.description && errors.description.message && (
+              <S.Error>{errors.description.message}</S.Error>
+            )}
           </S.Group>
-          <S.Group controlId="formGridDate">
+          <S.Group>
             <S.SigleDay>
               <S.Label>Dia do evento</S.Label>
               <S.Check
@@ -51,40 +53,66 @@ const CreateEvent = () => {
                 onChange={handleCheckboxChange}
               />
             </S.SigleDay>
-            <S.Control type="date" />
+            <S.Control type="date" {...register('startEvent')} />
+            {errors.startEvent && errors.startEvent.message && (
+              <S.Error>{errors.startEvent.message}</S.Error>
+            )}
           </S.Group>
           {!isSingleDay && (
             <S.Group controlId="formGridDate">
               <S.Label>Último dia do evento</S.Label>
-              <S.Control type="date" />
+              <S.Control type="date" {...register('startEvent')} />
+              {errors.name && errors.name.message && <S.Error>{errors.name.message}</S.Error>}
             </S.Group>
           )}
           <S.Time>
             <S.Group as={Col} controlId="formGridTime">
               <S.Label>Início do evento</S.Label>
-              <S.Control type="time" placeholder="Nome do evento" />
+              <S.Control
+                type="time"
+                placeholder="Hora inicio do evento"
+                {...register('startEventTime')}
+              />
+              {errors.name && errors.name.message && <S.Error>{errors.name.message}</S.Error>}
             </S.Group>
             <S.Group as={Col} controlId="formGridTime">
               <S.Label>Final do evento</S.Label>
-              <S.Control type="time" placeholder="Nome do evento" />
+              <S.Control
+                type="time"
+                placeholder="Hora final do evento"
+                {...register('endEventTime')}
+              />
             </S.Group>
           </S.Time>
 
           <S.Group controlId="formGridAddress">
             <S.Label>Endereço</S.Label>
-            <S.Control type="text" placeholder="Endereço" />
+            <S.Control type="text" placeholder="Endereço" {...register('address')} />
+            {errors.address && errors.address.message && (
+              <S.Error>{errors.address.message}</S.Error>
+            )}
           </S.Group>
           <S.Group controlId="formGridNumber">
             <S.Label>Número</S.Label>
-            <S.Control type="text" placeholder="Número" />
+            <S.Control type="text" placeholder="Número" {...register('number')} />
+            {errors.number && errors.number.message && <S.Error>{errors.number.message}</S.Error>}
           </S.Group>
           <S.Group controlId="formGridCity">
             <S.Label>Cidade</S.Label>
-            <S.Control type="text" placeholder="Cidade" />
+            <S.Control type="text" placeholder="Cidade" {...register('city')} />
+            {errors.city && errors.city.message && <S.Error>{errors.city.message}</S.Error>}
           </S.Group>
           <S.Group controlId="formGridState">
             <S.Label>Estado</S.Label>
-            <S.Control type="text" placeholder="Estado" />
+            <S.Control type="text" placeholder="Estado" {...register('state')} />
+            {errors.state && errors.state.message && <S.Error>{errors.state.message}</S.Error>}
+          </S.Group>
+          <S.Group controlId="formGridState">
+            <S.Label>CEP</S.Label>
+            <S.Control type="text" placeholder="CEP" {...register('zipCode')} />
+            {errors.zipCode && errors.zipCode.message && (
+              <S.Error>{errors.zipCode.message}</S.Error>
+            )}
           </S.Group>
           <S.Group controlId="formGridIsEventPaid">
             <S.Check
@@ -94,6 +122,10 @@ const CreateEvent = () => {
               onChange={handlePaidCheckboxChange}
             />
           </S.Group>
+          <S.Group controlId="formGridContact">
+            <S.Label>WhatsApp para contato</S.Label>
+            <S.Control type="text" placeholder="Contato" />
+          </S.Group>
 
           {isEventPaid && (
             <>
@@ -101,12 +133,14 @@ const CreateEvent = () => {
                 <S.Label>Valor do Evento</S.Label>
                 <S.Control type="text" placeholder="Valor do Evento" />
               </S.Group>
-              <S.Group controlId="formGridContact">
-                <S.Label>Contato para Compra</S.Label>
-                <S.Control type="text" placeholder="Contato para Compra" />
-              </S.Group>
             </>
           )}
+
+          <ButtonComponent
+            disabled={isSubmitDisabled}
+            type="submit"
+            text="Criar Evento"
+          ></ButtonComponent>
         </S.FormContainer>
       </S.Container>
     </>

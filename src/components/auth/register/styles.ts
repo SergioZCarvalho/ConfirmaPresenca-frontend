@@ -77,3 +77,7 @@ export const linkRouter = styled(Link)`
     transition: 0.5s;
   }
 `;
+
+export const Error = styled.span`
+  color: #bab8bb;
+`;

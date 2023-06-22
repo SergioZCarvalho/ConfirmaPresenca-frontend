@@ -86,3 +86,7 @@ export const Check = styled(Form.Check)`
     box-shadow: 0 0 0 0.05rem rgb(3 190 102);
   }
 `;
+
+export const Error = styled.span`
+  color: #bab8bb;
+`;
