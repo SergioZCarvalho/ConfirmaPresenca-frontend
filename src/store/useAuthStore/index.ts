@@ -10,7 +10,7 @@ type AuthState = {
 type AuthAction = {
   setToken: (token: string | null) => void;
   setUser: (user: User | null) => void;
-  //acao de logout exemplo: logout: () => void
+  logout: () => void;
 };
 
 export const initialState: AuthState = {
@@ -28,7 +28,9 @@ export const useAuthStore = create<AuthAction & AuthState>()(
       setUser(user) {
         set({ user: user });
       },
-      //ação de logout aqui repetir o de cima mas set({user: null, access_token: null...
+      logout() {
+        set({ user: null, access_token: null });
+      },
     }),
     {
       name: 'auth-store',

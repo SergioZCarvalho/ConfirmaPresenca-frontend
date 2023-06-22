@@ -15,8 +15,14 @@ const NavbarComponent = () => {
     setLoad(true);
   }, []);
 
-  //criar funcao de handleLoginClick
-  // se user ? ir pra login, senao fazer logout
+  const handleLoginClick = () => {
+    if (user) {
+      logout();
+      return navigate('/');
+    } else {
+      return navigate('/auth');
+    }
+  };
 
   return (
     <>
@@ -30,8 +36,7 @@ const NavbarComponent = () => {
               <ButtonComponent
                 text={user ? 'Sair' : 'Entrar'}
                 onClick={() => {
-                  //chamar funcao que foi criada aqui
-                  navigate('/auth');
+                  handleLoginClick();
                 }}
               ></ButtonComponent>
             </Navbar.Text>
