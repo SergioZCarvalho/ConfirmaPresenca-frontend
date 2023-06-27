@@ -16,3 +16,18 @@ export type CreateEvent = {
   zipCode: string;
   price: number;
 };
+
+export type Event = {
+  id: string;
+  cover?: string | null;
+  name: string;
+  description: string;
+  startEvent: Date;
+  endEvent: Date;
+  address: string;
+  city: string;
+  number: number;
+  state: string;
+  zipCode: string;
+  slug: string;
+};

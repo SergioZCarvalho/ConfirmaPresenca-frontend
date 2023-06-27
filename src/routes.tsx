@@ -25,7 +25,7 @@ export const routes: RouteObject[] = [
       },
 
       {
-        path: 'event',
+        path: 'event/:slug',
         element: <Event />,
       },
 

@@ -1,8 +1,9 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import * as S from './styles';
 
 const Event = () => {
   const navigate = useNavigate();
+  const { slug } = useParams();
 
   return (
     <>

@@ -1,3 +1,4 @@
+import { Event, useEventList } from '@/service';
 import * as S from './styles';
 import { useState } from 'react';
 
@@ -5,23 +6,45 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import { Item, useContextMenu, ItemParams, TriggerEvent } from 'react-contexify';
 
 import 'react-contexify/ReactContexify.css';
+import { useNavigate } from 'react-router-dom';
+import { useDeleteEvent } from '@/service/mutations/useDeleteEvent';
 
 const MENU_ID = 'blahblah';
 
 const MyEvent = () => {
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const { show: showContextMenu } = useContextMenu({
     id: MENU_ID,
   });
+  const [selectedEvent, setSelectedEvent] = useState<Event>();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleContextMenu = (event: TriggerEvent) => {
-    event.preventDefault();
-    showContextMenu({ event });
+  const handleContextMenu = (e: TriggerEvent, event: Event) => {
+    e.preventDefault();
+    setSelectedEvent(event);
+    showContextMenu({ event: e });
   };
 
+  const handleGoToEventClick = () => {
+    navigate(`/event/${selectedEvent?.slug}`);
+  };
+
+  const { deleteEventIsLoading, deleteEventMutate } = useDeleteEvent({
+    onSuccess: () => {
+      handleClose();
+      eventListRefetch();
+    },
+  });
+
+  const handleDeleteEventClick = () => {
+    if (!selectedEvent || isLoading) return;
+    if (confirm('Deseja realmente excluir este evento?')) {
+      deleteEventMutate({ eventId: selectedEvent.id });
+    }
+  };
   const handleItemClick = ({ event, props }: ItemParams) => {
     // eslint-disable-next-line react/prop-types
     const { id } = props;
@@ -44,19 +67,26 @@ const MyEvent = () => {
     }
   };
 
+  const { eventListData, eventListIsLoading, eventListRefetch } = useEventList({});
+
+  const isLoading = eventListIsLoading || deleteEventIsLoading;
+
   return (
     <>
-      <S.Container>
-        <S.Image url="https://cdn.folhape.com.br/img/pc/1100/1/dn_arquivo/2021/09/alok-26-3-1.jpg" />
-        <S.Content>
-          <S.Title>Alok</S.Title>
-          <S.information>21 de outubro</S.information>
-          <S.information>Circo Aruja</S.information>
-        </S.Content>
-        <S.MenuClosed>
-          <S.MenuIcon onClick={handleContextMenu} />
-        </S.MenuClosed>
-      </S.Container>
+      {eventListData &&
+        eventListData.map((event) => (
+          <S.Container key={event.id}>
+            <S.Image url={event.cover ?? ''} />
+            <S.Content>
+              <S.Title>{event.name}</S.Title>
+              <S.information>{event.startEvent.toString()}</S.information>
+              <S.information>{event.address}</S.information>
+            </S.Content>
+            <S.MenuClosed>
+              <S.MenuIcon onClick={(e) => handleContextMenu(e, event)} />
+            </S.MenuClosed>
+          </S.Container>
+        ))}
 
       <S.confirmed show={show} onHide={handleClose} placement="bottom">
         <Offcanvas.Header closeButton>
@@ -75,10 +105,10 @@ const MyEvent = () => {
         <Item id="view" onClick={handleShow}>
           Ver confirmados
         </Item>
-        <Item id="preview" onClick={handleItemClick}>
+        <Item id="preview" onClick={handleGoToEventClick}>
           Visualizar evento
         </Item>
-        <Item id="Delete" onClick={handleItemClick}>
+        <Item id="Delete" onClick={handleDeleteEventClick}>
           Deletar
         </Item>
         <Item id="update" onClick={handleItemClick}>
