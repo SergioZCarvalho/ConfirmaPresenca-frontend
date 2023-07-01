@@ -40,7 +40,7 @@ export const Title = styled.div`
   font-size: 1.5rem;
   padding-bottom: 10px;
 `;
-export const information = styled.div`
+export const Information = styled.div`
   color: #c0c0c0;
   font-size: 1.5rem;
   padding-bottom: 10px;

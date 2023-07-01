@@ -15,6 +15,7 @@ export type CreateEvent = {
   number: string;
   zipCode: string;
   price: number;
+  whatsapp: string;
 };
 
 export type Event = {
@@ -30,4 +31,6 @@ export type Event = {
   state: string;
   zipCode: string;
   slug: string;
+  price: number;
+  whatsapp: string;
 };

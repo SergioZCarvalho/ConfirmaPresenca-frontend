@@ -1,35 +1,50 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { formatCurrency } from '@/utils/formatCurrency';
 import * as S from './styles';
+import useLogic from './useLogic';
 
 const Event = () => {
-  const navigate = useNavigate();
-  const { slug } = useParams();
+  const { eventDetailsIsLoading, eventDetailsData, formattedStartDate, formattedEndDate } =
+    useLogic();
+  const coverUrl = eventDetailsData?.cover || '';
 
   return (
     <>
       <S.Cover>
-        <S.Image url="https://cdn.folhape.com.br/img/pc/1100/1/dn_arquivo/2021/09/alok-26-3-1.jpg" />
+        <S.Image url={coverUrl} />
         <S.Content>
-          <S.EventTitle>Alok</S.EventTitle>
-          <S.EventDate>21 de outubro</S.EventDate>
+          <S.EventTitle>{eventDetailsData?.name}</S.EventTitle>
+          <S.EventDate>
+            {formattedStartDate}
+            {formattedEndDate && formattedEndDate !== formattedStartDate && (
+              <> até {formattedEndDate}</>
+            )}
+          </S.EventDate>
           <S.EventEntranceFee>
             <S.EntranceFeeText>preço da entrada:</S.EntranceFeeText>
-            <S.EntranceFeePrice>entrada gratuita</S.EntranceFeePrice>
+            <S.EntranceFeePrice>
+              {eventDetailsData &&
+                (eventDetailsData.price || eventDetailsData.price === 0
+                  ? 'Gratuito'
+                  : formatCurrency(eventDetailsData.price))}
+            </S.EntranceFeePrice>
           </S.EventEntranceFee>
         </S.Content>
       </S.Cover>
       <S.EventInformation>
         <S.EventInformationTitle>Endereço</S.EventInformationTitle>
-        <S.EventInformationValue>Circo Aruja</S.EventInformationValue>
+        <S.EventInformationValue>{eventDetailsData?.address}</S.EventInformationValue>
       </S.EventInformation>
       <S.EventInformation>
         <S.EventInformationTitle>Local</S.EventInformationTitle>
+        <S.EventInformationValue>
+          {eventDetailsData?.city} / {eventDetailsData?.state}
+        </S.EventInformationValue>
       </S.EventInformation>
       <S.EventInformation>
         <S.EventInformationTitle>Contato</S.EventInformationTitle>
         <S.Contact>
           <S.TypeOfContact>Telefone:</S.TypeOfContact>
-          <S.ValueOfContact>(11) 99999-9999</S.ValueOfContact>
+          <S.ValueOfContact>{eventDetailsData?.whatsapp}</S.ValueOfContact>
         </S.Contact>
       </S.EventInformation>
     </>

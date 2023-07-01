@@ -20,6 +20,7 @@ type FormData = {
   zipCode: string;
   price: number;
   state: string;
+  whatsapp: string;
 };
 
 const UseLogic = () => {
@@ -40,6 +41,17 @@ const UseLogic = () => {
     const fileInput = event.target;
     if (fileInput && fileInput.files && fileInput.files.length > 0) {
       const imageFile = fileInput.files[0];
+      console.log(imageFile.type);
+      if (
+        imageFile.type !== 'image/jpeg' &&
+        imageFile.type !== 'image/png' &&
+        imageFile.type !== 'image/jpg' &&
+        imageFile.type !== 'image/webp'
+      ) {
+        alert('Apenas imagens PNG e JPG são aceitas');
+        setCoverImage(null);
+        return;
+      }
       setCoverImage(imageFile);
     }
   };
@@ -64,6 +76,7 @@ const UseLogic = () => {
     zipCode: Yup.string().required(' o CEP é obrigatório'),
     price: Yup.number().nullable(),
     state: Yup.string().required(' o estado é obrigatório'),
+    whatsapp: Yup.string().required(' o contato é obrigatório'),
   });
 
   const {
@@ -86,6 +99,7 @@ const UseLogic = () => {
       price: 0,
       startEventTime: '',
       endEventTime: '',
+      whatsapp: '',
     },
     resolver: yupResolver(formSchema),
   });

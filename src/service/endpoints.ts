@@ -7,6 +7,7 @@ export const USER_CREATE_EVENT_KEY = 'userCreateEventKey';
 export const USER_DELETE_EVENT_KEY = 'userDeleteEventKey';
 export const UPLOAD_EVENT_COVER_KEY = 'userUploadEventCoverKey';
 export const USER_LIST_EVENTS_KEY = 'userListEventsKey';
+export const USER_EVENTS_DETAILS_KEY = 'userEventDetailKey';
 
 const auth = {
   user: () => '/user',
@@ -17,6 +18,7 @@ const event = {
   event: () => `/event`,
   eventId: ({ id }: { id: string }) => `/event/${id}`,
   eventUpload: () => `/event/upload`,
+  eventDetail: ({ slug }: { slug: string }) => `/event/${slug}`,
 };
 
 export const Endpoints = {

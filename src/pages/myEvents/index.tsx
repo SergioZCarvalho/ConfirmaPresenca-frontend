@@ -8,6 +8,7 @@ import { Item, useContextMenu, ItemParams, TriggerEvent } from 'react-contexify'
 import 'react-contexify/ReactContexify.css';
 import { useNavigate } from 'react-router-dom';
 import { useDeleteEvent } from '@/service/mutations/useDeleteEvent';
+import { formatDate } from '@/utils/formatDate';
 
 const MENU_ID = 'blahblah';
 
@@ -79,8 +80,11 @@ const MyEvent = () => {
             <S.Image url={event.cover ?? ''} />
             <S.Content>
               <S.Title>{event.name}</S.Title>
-              <S.information>{event.startEvent.toString()}</S.information>
-              <S.information>{event.address}</S.information>
+              <S.Information>{formatDate(event.startEvent)}</S.Information>
+              {event.startEvent !== event.endEvent && (
+                <S.Information>{formatDate(event.endEvent)}</S.Information>
+              )}
+              <S.Information>{event.address}</S.Information>
             </S.Content>
             <S.MenuClosed>
               <S.MenuIcon onClick={(e) => handleContextMenu(e, event)} />

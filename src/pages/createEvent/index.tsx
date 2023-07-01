@@ -24,7 +24,12 @@ const CreateEvent = () => {
         <S.FormContainer onSubmit={handleSubmit(onSubmit)}>
           <S.Group controlId="formGridImage">
             <S.Label>Imagem de Capa</S.Label>
-            <S.Control type="file" onChange={handleImageChange} accept="image/*" />
+            <S.Control
+              type="file"
+              as="input"
+              onChange={handleImageChange}
+              accept=".png, .jpg, .jpeg, .webp, .jfif"
+            />
           </S.Group>
           <S.Group controlId="formGridEventTitle">
             <S.Label>Nome do evento</S.Label>
@@ -61,7 +66,7 @@ const CreateEvent = () => {
           {!isSingleDay && (
             <S.Group controlId="formGridDate">
               <S.Label>Último dia do evento</S.Label>
-              <S.Control type="date" {...register('startEvent')} />
+              <S.Control type="date" {...register('endEvent')} />
               {errors.name && errors.name.message && <S.Error>{errors.name.message}</S.Error>}
             </S.Group>
           )}
@@ -114,6 +119,15 @@ const CreateEvent = () => {
               <S.Error>{errors.zipCode.message}</S.Error>
             )}
           </S.Group>
+
+          <S.Group controlId="formGridContact">
+            <S.Label>WhatsApp para contato</S.Label>
+            <S.Control type="text" placeholder="Contato" {...register('whatsapp')} />
+            {errors.whatsapp && errors.whatsapp.message && (
+              <S.Error>{errors.whatsapp.message}</S.Error>
+            )}
+          </S.Group>
+
           <S.Group controlId="formGridIsEventPaid">
             <S.Check
               type="checkbox"
@@ -122,16 +136,12 @@ const CreateEvent = () => {
               onChange={handlePaidCheckboxChange}
             />
           </S.Group>
-          <S.Group controlId="formGridContact">
-            <S.Label>WhatsApp para contato</S.Label>
-            <S.Control type="text" placeholder="Contato" />
-          </S.Group>
 
           {isEventPaid && (
             <>
               <S.Group controlId="formGridEventPrice">
                 <S.Label>Valor do Evento</S.Label>
-                <S.Control type="text" placeholder="Valor do Evento" />
+                <S.Control type="text" placeholder="Valor do Evento" {...register('price')} />
               </S.Group>
             </>
           )}

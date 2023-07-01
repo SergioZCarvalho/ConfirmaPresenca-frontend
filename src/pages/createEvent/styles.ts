@@ -30,6 +30,8 @@ export const Label = styled(Form.Label)`
   margin-right: 30px;
 `;
 
+export const File = styled.input``;
+
 export const Control = styled(Form.Control)`
   width: 100%;
   color-scheme: dark;
