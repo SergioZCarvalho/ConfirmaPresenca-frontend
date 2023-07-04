@@ -1,8 +1,11 @@
 import { useEventDetails } from '@/service';
-import { formatDate } from '@/utils/formatDate';
+import { useAuthStore } from '@/store';
+import { useFormatDate } from '@/utils/formatDate';
 import { useParams } from 'react-router-dom';
 
 const useLogic = () => {
+  const { dateWithRange } = useFormatDate();
+  const { user } = useAuthStore();
   const { slug } = useParams();
 
   const { eventDetailsIsLoading, eventDetailsData, eventDetailsRefetch } = useEventDetails({
@@ -10,15 +13,17 @@ const useLogic = () => {
     enabled: !!slug,
   });
 
-  const formattedStartDate = formatDate(eventDetailsData?.startEvent ?? new Date());
-  const formattedEndDate = formatDate(eventDetailsData?.endEvent ?? new Date());
+  const formattedDate = dateWithRange(
+    eventDetailsData?.startEvent ?? new Date(),
+    eventDetailsData?.endEvent ?? new Date(),
+  );
 
   return {
     eventDetailsIsLoading,
     eventDetailsData,
     eventDetailsRefetch,
-    formattedStartDate,
-    formattedEndDate,
+    user,
+    formattedDate,
   };
 };
 

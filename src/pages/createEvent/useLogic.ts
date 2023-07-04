@@ -11,7 +11,7 @@ type FormData = {
   name: string;
   description: string;
   startEvent: Date;
-  endEvent: Date;
+  endEvent: Date | null;
   startEventTime: string;
   endEventTime: string;
   address: string;
@@ -33,7 +33,7 @@ const UseLogic = () => {
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsSingleDay(event.target.checked);
     if (event.target.checked) {
-      setValue('endEvent', getValues('startEvent'));
+      setValue('endEvent', null);
     }
   };
 
@@ -90,7 +90,7 @@ const UseLogic = () => {
       name: '',
       description: '',
       startEvent: new Date(),
-      endEvent: new Date(),
+      endEvent: null,
       address: '',
       city: '',
       number: '',

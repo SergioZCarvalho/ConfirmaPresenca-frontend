@@ -1,76 +1,33 @@
-import { Event, useEventList } from '@/service';
 import * as S from './styles';
-import { useState } from 'react';
 
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { Item, useContextMenu, ItemParams, TriggerEvent } from 'react-contexify';
+import { Item } from 'react-contexify';
 
 import 'react-contexify/ReactContexify.css';
-import { useNavigate } from 'react-router-dom';
-import { useDeleteEvent } from '@/service/mutations/useDeleteEvent';
-import { formatDate } from '@/utils/formatDate';
-
-const MENU_ID = 'blahblah';
+import useLogic from './useLogic';
+import { useConfirmList } from '@/service';
 
 const MyEvent = () => {
-  const navigate = useNavigate();
-  const [show, setShow] = useState(false);
-  const { show: showContextMenu } = useContextMenu({
-    id: MENU_ID,
-  });
-  const [selectedEvent, setSelectedEvent] = useState<Event>();
+  const {
+    eventListData,
+    eventListIsLoading,
+    eventListRefetch,
+    handleItemClick,
+    handleClose,
+    handleShow,
+    handleContextMenu,
+    handleGoToEventClick,
+    handleDeleteEventClick,
+    isLoading,
+    show,
+    dateWithRange,
+    MENU_ID,
+  } = useLogic();
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const { confirmListData, confirmListIsLoading, confirmListRefetch } = useConfirmList({});
 
-  const handleContextMenu = (e: TriggerEvent, event: Event) => {
-    e.preventDefault();
-    setSelectedEvent(event);
-    showContextMenu({ event: e });
-  };
-
-  const handleGoToEventClick = () => {
-    navigate(`/event/${selectedEvent?.slug}`);
-  };
-
-  const { deleteEventIsLoading, deleteEventMutate } = useDeleteEvent({
-    onSuccess: () => {
-      handleClose();
-      eventListRefetch();
-    },
-  });
-
-  const handleDeleteEventClick = () => {
-    if (!selectedEvent || isLoading) return;
-    if (confirm('Deseja realmente excluir este evento?')) {
-      deleteEventMutate({ eventId: selectedEvent.id });
-    }
-  };
-  const handleItemClick = ({ event, props }: ItemParams) => {
-    // eslint-disable-next-line react/prop-types
-    const { id } = props;
-    switch (id) {
-      case 'Delete':
-        console.log(event, props);
-        break;
-      case 'update':
-        console.log(event, props);
-        break;
-      case 'view':
-        console.log(event, props);
-        break;
-      case 'preview':
-        console.log(event, props);
-        break;
-
-      default:
-        break;
-    }
-  };
-
-  const { eventListData, eventListIsLoading, eventListRefetch } = useEventList({});
-
-  const isLoading = eventListIsLoading || deleteEventIsLoading;
+  const confirmedList = confirmListData?.filter((confirm) => confirm.hasAccepted === true);
+  const declinedList = confirmListData?.filter((confirm) => confirm.hasAccepted === false);
 
   return (
     <>
@@ -80,10 +37,7 @@ const MyEvent = () => {
             <S.Image url={event.cover ?? ''} />
             <S.Content>
               <S.Title>{event.name}</S.Title>
-              <S.Information>{formatDate(event.startEvent)}</S.Information>
-              {event.startEvent !== event.endEvent && (
-                <S.Information>{formatDate(event.endEvent)}</S.Information>
-              )}
+              <S.Information>{dateWithRange(event.startEvent, event.endEvent)}</S.Information>
               <S.Information>{event.address}</S.Information>
             </S.Content>
             <S.MenuClosed>
@@ -94,14 +48,33 @@ const MyEvent = () => {
 
       <S.confirmed show={show} onHide={handleClose} placement="bottom">
         <Offcanvas.Header closeButton>
-          <S.TitleConfirmed>Confirmados</S.TitleConfirmed>
+          <S.TitleConfirmed>Lista de Confirmações</S.TitleConfirmed>
         </Offcanvas.Header>
         <S.BodyConfirmed>
-          <p>confirmado 1</p>
-          <p>confirmado 2</p>
-          <p>confirmado 3</p>
-          <p>confirmado 4</p>
-          <p>confirmado 5</p>
+          <div>
+            <S.willAttend>Confirmados:</S.willAttend>
+            {confirmedList && confirmedList.length > 0 ? (
+              confirmedList.map((confirm) => (
+                <div key={confirm.id}>
+                  <p>{confirm.name}</p>
+                </div>
+              ))
+            ) : (
+              <p>Sem confirmados</p>
+            )}
+          </div>
+          <div>
+            <S.willNotAttend>Recusados:</S.willNotAttend>
+            {declinedList && declinedList.length > 0 ? (
+              declinedList.map((confirm) => (
+                <div key={confirm.id}>
+                  <p>{confirm.name}</p>
+                </div>
+              ))
+            ) : (
+              <p>Sem recusados</p>
+            )}
+          </div>
         </S.BodyConfirmed>
       </S.confirmed>
 

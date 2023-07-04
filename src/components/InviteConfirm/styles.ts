@@ -14,6 +14,7 @@ export const Container = styled.div`
   border-top-right-radius: 15px;
   border-top-left-radius: 15px;
   gap: 16px;
+  z-index: 999;
 `;
 export const Text = styled.p`
   color: #fff;
@@ -24,19 +25,23 @@ export const Buttons = styled.div`
   width: 100%;
   display: flex;
 `;
-export const LeftButton = styled.button`
+export const LeftButton = styled.button<{ isSingle: boolean }>`
   width: 100%;
   background-color: #970101;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
+  border-top-right-radius: ${(props) => (props.isSingle ? '15px' : '0px')};
+  border-bottom-right-radius: ${(props) => (props.isSingle ? '15px' : '0px')};
   border: none;
   &:active {
     background-color: #6a0000;
   }
 `;
-export const RightButton = styled.button`
+export const RightButton = styled.button<{ isSingle: boolean }>`
   width: 100%;
   background-color: #02be67;
+  border-top-left-radius: ${(props) => (props.isSingle ? '15px' : '0px')};
+  border-bottom-left-radius: ${(props) => (props.isSingle ? '15px' : '0px')};
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
   border: none;

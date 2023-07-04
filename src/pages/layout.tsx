@@ -10,7 +10,6 @@ const RootLayout = () => {
       <NavbarComponent />
       <Outlet />
       {screen.width <= deviceSize.tablet && <BottomTabs />}
-
       <FooterComponent />
     </>
   );

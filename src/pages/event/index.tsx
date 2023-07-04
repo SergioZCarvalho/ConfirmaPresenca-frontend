@@ -1,10 +1,10 @@
 import { formatCurrency } from '@/utils/formatCurrency';
 import * as S from './styles';
 import useLogic from './useLogic';
+import InviteConfirm from '@/components/InviteConfirm';
 
 const Event = () => {
-  const { eventDetailsIsLoading, eventDetailsData, formattedStartDate, formattedEndDate } =
-    useLogic();
+  const { eventDetailsIsLoading, eventDetailsData, user, formattedDate } = useLogic();
   const coverUrl = eventDetailsData?.cover || '';
 
   return (
@@ -13,12 +13,7 @@ const Event = () => {
         <S.Image url={coverUrl} />
         <S.Content>
           <S.EventTitle>{eventDetailsData?.name}</S.EventTitle>
-          <S.EventDate>
-            {formattedStartDate}
-            {formattedEndDate && formattedEndDate !== formattedStartDate && (
-              <> até {formattedEndDate}</>
-            )}
-          </S.EventDate>
+          <S.EventDate>{formattedDate}</S.EventDate>
           <S.EventEntranceFee>
             <S.EntranceFeeText>preço da entrada:</S.EntranceFeeText>
             <S.EntranceFeePrice>
@@ -47,6 +42,7 @@ const Event = () => {
           <S.ValueOfContact>{eventDetailsData?.whatsapp}</S.ValueOfContact>
         </S.Contact>
       </S.EventInformation>
+      {!user && eventDetailsData && <InviteConfirm eventId={eventDetailsData?.id} />}
     </>
   );
 };

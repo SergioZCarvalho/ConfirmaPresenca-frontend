@@ -68,3 +68,13 @@ export const MenuOpen = styled(Menu)`
   --contexify-activeItem-color: #ffffff;
   --contexify-activeItem-bgColor: #02be67;
 `;
+
+export const willAttend = styled.div`
+  color: #02be67;
+  font-size: 1.5rem;
+`;
+
+export const willNotAttend = styled.div`
+  color: #02be67;
+  font-size: 1.5rem;
+`;

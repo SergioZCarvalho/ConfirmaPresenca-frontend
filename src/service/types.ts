@@ -34,3 +34,11 @@ export type Event = {
   price: number;
   whatsapp: string;
 };
+
+export type Confirm = {
+  id: string;
+  name: string;
+  email: string;
+  event: string;
+  hasAccepted: boolean;
+};
