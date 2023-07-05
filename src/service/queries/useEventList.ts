@@ -12,16 +12,9 @@ export const useEventList = ({ ...options }: UseEventListParams) => {
   const { isLoading, data, refetch } = useQuery<UseEventListResponse, AxiosError>(
     [USER_LIST_EVENTS_KEY],
     async () =>
-      await api
-        .get<UseEventListResponse>(Endpoints.event(), {
-          params: {
-            'pagination[page]': 1,
-            'pagination[pageSize]': 10,
-          },
-        })
-        .then((res) => {
-          return res.data;
-        }),
+      await api.get<UseEventListResponse>(Endpoints.event()).then((res) => {
+        return res.data;
+      }),
     {
       ...options,
     },

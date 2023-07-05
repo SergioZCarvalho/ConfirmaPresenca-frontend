@@ -15,6 +15,8 @@ const CreateEvent = () => {
     isEventPaid,
     isSingleDay,
     isSubmitDisabled,
+    currentImage,
+    updatingId,
   } = useLogic();
 
   return (
@@ -24,6 +26,7 @@ const CreateEvent = () => {
         <S.FormContainer onSubmit={handleSubmit(onSubmit)}>
           <S.Group controlId="formGridImage">
             <S.Label>Imagem de Capa</S.Label>
+            {currentImage && <img src={currentImage} alt="" />}
             <S.Control
               type="file"
               as="input"
@@ -147,9 +150,9 @@ const CreateEvent = () => {
           )}
 
           <ButtonComponent
-            disabled={isSubmitDisabled}
+            disabled={isSubmitDisabled()}
             type="submit"
-            text="Criar Evento"
+            text={updatingId ? 'Atualizar Evento' : 'Criar Evento'}
           ></ButtonComponent>
         </S.FormContainer>
       </S.Container>

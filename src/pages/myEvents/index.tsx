@@ -5,29 +5,60 @@ import { Item } from 'react-contexify';
 
 import 'react-contexify/ReactContexify.css';
 import useLogic from './useLogic';
-import { useConfirmList } from '@/service';
+import { useMemo } from 'react';
 
 const MyEvent = () => {
   const {
     eventListData,
     eventListIsLoading,
     eventListRefetch,
-    handleItemClick,
     handleClose,
     handleShow,
     handleContextMenu,
     handleGoToEventClick,
     handleDeleteEventClick,
+    handleGoToUpdateEventClick,
     isLoading,
     show,
     dateWithRange,
     MENU_ID,
+    confirmedList,
+    declinedList,
+    eventConfirmListIsLoading,
   } = useLogic();
 
-  const { confirmListData, confirmListIsLoading, confirmListRefetch } = useConfirmList({});
+  const loadConfirmedList = useMemo(() => {
+    if (eventConfirmListIsLoading) return <p>Carregando...</p>;
 
-  const confirmedList = confirmListData?.filter((confirm) => confirm.hasAccepted === true);
-  const declinedList = confirmListData?.filter((confirm) => confirm.hasAccepted === false);
+    return (
+      <S.BodyConfirmed>
+        <div>
+          <S.willAttend>Confirmados:</S.willAttend>
+          {confirmedList && confirmedList.length > 0 ? (
+            confirmedList.map((confirm) => (
+              <div key={confirm.id}>
+                <p>{confirm.name}</p>
+              </div>
+            ))
+          ) : (
+            <p>Sem confirmados</p>
+          )}
+        </div>
+        <div>
+          <S.willNotAttend>Recusados:</S.willNotAttend>
+          {declinedList && declinedList.length > 0 ? (
+            declinedList.map((confirm) => (
+              <div key={confirm.id}>
+                <p>{confirm.name}</p>
+              </div>
+            ))
+          ) : (
+            <p>Sem recusados</p>
+          )}
+        </div>
+      </S.BodyConfirmed>
+    );
+  }, [eventConfirmListIsLoading, confirmedList, declinedList]);
 
   return (
     <>
@@ -50,32 +81,7 @@ const MyEvent = () => {
         <Offcanvas.Header closeButton>
           <S.TitleConfirmed>Lista de Confirmações</S.TitleConfirmed>
         </Offcanvas.Header>
-        <S.BodyConfirmed>
-          <div>
-            <S.willAttend>Confirmados:</S.willAttend>
-            {confirmedList && confirmedList.length > 0 ? (
-              confirmedList.map((confirm) => (
-                <div key={confirm.id}>
-                  <p>{confirm.name}</p>
-                </div>
-              ))
-            ) : (
-              <p>Sem confirmados</p>
-            )}
-          </div>
-          <div>
-            <S.willNotAttend>Recusados:</S.willNotAttend>
-            {declinedList && declinedList.length > 0 ? (
-              declinedList.map((confirm) => (
-                <div key={confirm.id}>
-                  <p>{confirm.name}</p>
-                </div>
-              ))
-            ) : (
-              <p>Sem recusados</p>
-            )}
-          </div>
-        </S.BodyConfirmed>
+        {loadConfirmedList}
       </S.confirmed>
 
       <S.MenuOpen id={MENU_ID} animation="slide">
@@ -88,7 +94,7 @@ const MyEvent = () => {
         <Item id="Delete" onClick={handleDeleteEventClick}>
           Deletar
         </Item>
-        <Item id="update" onClick={handleItemClick}>
+        <Item id="update" onClick={handleGoToUpdateEventClick}>
           Atualizar
         </Item>
       </S.MenuOpen>

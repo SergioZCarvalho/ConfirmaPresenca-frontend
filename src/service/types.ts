@@ -25,14 +25,20 @@ export type Event = {
   description: string;
   startEvent: Date;
   endEvent: Date;
+  startEventTime: string;
+  endEventTime: string;
   address: string;
   city: string;
-  number: number;
+  number: string;
   state: string;
   zipCode: string;
   slug: string;
   price: number;
   whatsapp: string;
+};
+
+export type EventPopulated = Event & {
+  confirms: Confirm[];
 };
 
 export type Confirm = {

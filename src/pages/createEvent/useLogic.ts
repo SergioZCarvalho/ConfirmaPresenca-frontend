@@ -1,33 +1,21 @@
-import { useCreateEvent } from '@/service';
+import { UseEventDetails, useCreateEvent } from '@/service';
 import { useUploadEventCover } from '@/service/mutations/useUploadEventCover';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from 'react';
+import { format, isSameDay } from 'date-fns';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import * as Yup from 'yup';
-
-type FormData = {
-  name: string;
-  description: string;
-  startEvent: Date;
-  endEvent: Date | null;
-  startEventTime: string;
-  endEventTime: string;
-  address: string;
-  city: string;
-  number: string;
-  zipCode: string;
-  price: number;
-  state: string;
-  whatsapp: string;
-};
+import { InferType } from 'yup';
 
 const UseLogic = () => {
   const navigate = useNavigate();
+  const { id: updatingId } = useParams();
 
   const [isSingleDay, setIsSingleDay] = useState(false);
   const [coverImage, setCoverImage] = useState<File | null>(null);
+  const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [isEventPaid, setIsEventPaid] = useState(false);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +29,6 @@ const UseLogic = () => {
     const fileInput = event.target;
     if (fileInput && fileInput.files && fileInput.files.length > 0) {
       const imageFile = fileInput.files[0];
-      console.log(imageFile.type);
       if (
         imageFile.type !== 'image/jpeg' &&
         imageFile.type !== 'image/png' &&
@@ -53,6 +40,13 @@ const UseLogic = () => {
         return;
       }
       setCoverImage(imageFile);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (!e.target) return;
+        const base64Image = e.target.result as string;
+        setCurrentImage(base64Image);
+      };
+      reader.readAsDataURL(imageFile);
     }
   };
 
@@ -64,19 +58,19 @@ const UseLogic = () => {
   };
 
   const formSchema = Yup.object().shape({
-    name: Yup.string().required(' o nome é obrigatório'),
-    description: Yup.string().required(' a descrição é obrigatório'),
-    startEvent: Yup.date().required(' a data de início é obrigatório'),
-    endEvent: Yup.date().nullable(),
-    startEventTime: Yup.string().nullable(),
-    endEventTime: Yup.string().nullable(),
-    address: Yup.string().required(' o endereço é obrigatório'),
-    city: Yup.string().required(' a cidade é obrigatório'),
-    number: Yup.string().required(' o numero é obrigatório'),
-    zipCode: Yup.string().required(' o CEP é obrigatório'),
+    name: Yup.string().required(' o nome é obrigatório').nonNullable(),
+    description: Yup.string().required(' a descrição é obrigatório').nonNullable(),
+    startEvent: Yup.mixed().required('A data de início é obrigatória').nonNullable(),
+    endEvent: Yup.mixed().nullable(),
+    startEventTime: Yup.string().nonNullable(),
+    endEventTime: Yup.string().nonNullable(),
+    address: Yup.string().required(' o endereço é obrigatório').nonNullable(),
+    city: Yup.string().required(' a cidade é obrigatório').nonNullable(),
+    number: Yup.string().required(' o numero é obrigatório').nonNullable(),
+    zipCode: Yup.string().required(' o CEP é obrigatório').nonNullable(),
     price: Yup.number().nullable(),
-    state: Yup.string().required(' o estado é obrigatório'),
-    whatsapp: Yup.string().required(' o contato é obrigatório'),
+    state: Yup.string().required(' o estado é obrigatório').nonNullable(),
+    whatsapp: Yup.string().required(' o contato é obrigatório').nonNullable(),
   });
 
   const {
@@ -85,7 +79,8 @@ const UseLogic = () => {
     formState: { errors },
     setValue,
     getValues,
-  } = useForm<FormData>({
+    reset,
+  } = useForm({
     defaultValues: {
       name: '',
       description: '',
@@ -104,10 +99,35 @@ const UseLogic = () => {
     resolver: yupResolver(formSchema),
   });
 
+  const { useEventDetailsData, useEventDetailsisFetching } = UseEventDetails({
+    eventId: updatingId ?? '',
+    enabled: !!updatingId,
+  });
+
+  useEffect(() => {
+    if (useEventDetailsData && updatingId && !useEventDetailsisFetching) {
+      const { startEvent, endEvent, ...rest } = useEventDetailsData;
+      const startEventDate = new Date(startEvent);
+      const endEventDate = new Date(endEvent);
+      setIsSingleDay(isSameDay(startEventDate, endEventDate));
+      setIsEventPaid(useEventDetailsData.price > 0);
+      setCurrentImage(useEventDetailsData.cover ?? null);
+      reset({
+        ...rest,
+        startEvent: format(startEventDate, 'yyyy-MM-dd'),
+        endEvent: format(endEventDate, 'yyyy-MM-dd'),
+        startEventTime: format(startEventDate, 'HH:mm'),
+        endEventTime: format(endEventDate, 'HH:mm'),
+      });
+    }
+  }, [useEventDetailsData]);
+
   const { createEventIsLoading, createEventMutate } = useCreateEvent({
     onSuccess(data) {
-      console.log('data', data);
-      if (!coverImage) return;
+      if (!coverImage) {
+        if (updatingId) navigate('/my-events', { replace: true });
+        return;
+      }
       uploadEventCoverMutate({
         eventId: data.id,
         file: coverImage,
@@ -121,15 +141,14 @@ const UseLogic = () => {
     },
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
+  const onSubmit = (data: InferType<typeof formSchema>) => {
     const buildStartMinutes =
       Number(data.startEventTime?.split(':')[0]) * 60 + Number(data.startEventTime?.split(':')[1]);
     const buildEndMinutes =
       Number(data.endEventTime?.split(':')[0]) * 60 + Number(data.endEventTime?.split(':')[1]);
-    const startEvent = new Date(data.startEvent);
+    const startEvent = new Date(data.startEvent as Date);
     startEvent.setMinutes(buildStartMinutes);
-    const endEvent = new Date(data.endEvent || data.startEvent);
+    const endEvent = new Date((data.endEvent as Date) || (data.startEvent as Date));
     endEvent.setMinutes(buildEndMinutes);
     createEventMutate({
       ...data,
@@ -139,7 +158,12 @@ const UseLogic = () => {
     });
   };
 
-  const isSubmitDisabled = createEventIsLoading || Object.keys(errors).length > 0 || !coverImage;
+  const isSubmitDisabled = () => {
+    if (updatingId) {
+      return createEventIsLoading || Object.keys(errors).length > 0;
+    }
+    return createEventIsLoading || Object.keys(errors).length > 0 || !coverImage;
+  };
 
   return {
     onSubmit,
@@ -152,6 +176,8 @@ const UseLogic = () => {
     isEventPaid,
     isSingleDay,
     isSubmitDisabled,
+    currentImage,
+    updatingId,
   };
 };
 export default UseLogic;

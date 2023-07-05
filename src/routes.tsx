@@ -41,6 +41,10 @@ export const routes: RouteObject[] = [
             path: 'create-event',
             element: <CreateEvent />,
           },
+          {
+            path: 'update-event/:id',
+            element: <CreateEvent />,
+          },
         ],
       },
     ],

@@ -40,7 +40,7 @@ export const useCreateEvent = ({ ...options }: UseCreateEventParam) => {
   const { api } = useAxios();
   const { isLoading, mutate } = useMutation<CreateUserResponse, AxiosError, CreateUserParams>(
     [USER_CREATE_EVENT_KEY],
-    async (requestData) => await api.post(Endpoints.event(), requestData).then((res) => res.data),
+    async (requestData) => await api.put(Endpoints.event(), requestData).then((res) => res.data),
     {
       ...options,
       onSuccess(data, variables, context) {

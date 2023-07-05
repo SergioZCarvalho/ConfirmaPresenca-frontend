@@ -1,37 +1,30 @@
 import { UseQueryOptions, useQuery } from 'react-query';
 import { AxiosError } from 'axios';
 import { useAxios } from '@/utils/useAxios';
-import { Endpoints, USER_EVENTS_DETAILS_KEY } from '../endpoints';
+import { EVENT_DETAIL_KEY, Endpoints } from '../endpoints';
 import { Event } from '../types';
 
 export type UseEventDetailsResponse = Event;
 type UseEventDetailsParams = UseQueryOptions<UseEventDetailsResponse, AxiosError> & {
-  slug: string;
+  eventId: string;
 };
 
-export const useEventDetails = ({ slug, ...options }: UseEventDetailsParams) => {
+export const UseEventDetails = ({ eventId, ...options }: UseEventDetailsParams) => {
   const { api } = useAxios();
-  const { isLoading, data, refetch } = useQuery<UseEventDetailsResponse, AxiosError>(
-    [USER_EVENTS_DETAILS_KEY, slug],
+  const { isFetching, data, refetch } = useQuery<UseEventDetailsResponse, AxiosError>(
+    [EVENT_DETAIL_KEY],
     async () =>
-      await api
-        .get<UseEventDetailsResponse>(Endpoints.eventDetail({ slug }), {
-          params: {
-            'pagination[page]': 1,
-            'pagination[pageSize]': 10,
-          },
-        })
-        .then((res) => {
-          return res.data;
-        }),
+      await api.get<UseEventDetailsResponse>(Endpoints.eventId({ id: eventId })).then((res) => {
+        return res.data;
+      }),
     {
       ...options,
     },
   );
 
   return {
-    eventDetailsIsLoading: isLoading,
-    eventDetailsData: data,
-    eventDetailsRefetch: refetch,
+    useEventDetailsisFetching: isFetching,
+    useEventDetailsData: data,
+    useEventDetailsRefetch: refetch,
   };
 };

@@ -1,8 +1,8 @@
-import { Event, useEventList, useConfirmList } from '@/service';
+import { Event, useEventConfirmList, useEventList } from '@/service';
 import { useDeleteEvent } from '@/service/mutations/useDeleteEvent';
 import { useFormatDate } from '@/utils/formatDate';
 import { useState } from 'react';
-import { ItemParams, TriggerEvent, useContextMenu } from 'react-contexify';
+import { TriggerEvent, useContextMenu } from 'react-contexify';
 import { useNavigate } from 'react-router-dom';
 
 const MENU_ID = 'blahblah';
@@ -29,6 +29,10 @@ const useLogic = () => {
     navigate(`/event/${selectedEvent?.slug}`);
   };
 
+  const handleGoToUpdateEventClick = () => {
+    navigate(`/update-event/${selectedEvent?.id}`);
+  };
+
   const { deleteEventIsLoading, deleteEventMutate } = useDeleteEvent({
     onSuccess: () => {
       handleClose();
@@ -43,38 +47,23 @@ const useLogic = () => {
     }
   };
 
-  const handleItemClick = ({ event, props }: ItemParams) => {
-    // eslint-disable-next-line react/prop-types
-    const { id } = props;
-    switch (id) {
-      case 'Delete':
-        console.log(event, props);
-        break;
-      case 'update':
-        console.log(event, props);
-        break;
-      case 'view':
-        console.log(event, props);
-        break;
-      case 'preview':
-        console.log(event, props);
-        break;
-
-      default:
-        break;
-    }
-  };
-
   const { eventListData, eventListIsLoading, eventListRefetch } = useEventList({});
-  const { confirmListData, confirmListIsLoading, confirmListRefetch } = useConfirmList({}); // Use the useConfirmList query hook
+  const { eventConfirmListData, eventConfirmListIsLoading, eventConfirmListRefetch } =
+    useEventConfirmList({ eventId: selectedEvent?.id ?? '', enabled: !!selectedEvent }); // Use the useConfirmList query hook
 
   const isLoading = eventListIsLoading || deleteEventIsLoading;
+
+  const confirmedList = eventConfirmListData
+    ? eventConfirmListData.confirms.filter((confirm) => confirm.hasAccepted === true)
+    : [];
+  const declinedList = eventConfirmListData
+    ? eventConfirmListData.confirms.filter((confirm) => confirm.hasAccepted === false)
+    : [];
 
   return {
     eventListData,
     eventListIsLoading,
     eventListRefetch,
-    handleItemClick,
     handleClose,
     handleShow,
     handleContextMenu,
@@ -84,9 +73,10 @@ const useLogic = () => {
     show,
     dateWithRange,
     MENU_ID,
-    confirmListData,
-    confirmListIsLoading,
-    confirmListRefetch,
+    confirmedList,
+    declinedList,
+    eventConfirmListIsLoading,
+    handleGoToUpdateEventClick,
   };
 };
 

@@ -1,4 +1,4 @@
-import { useEventDetails } from '@/service';
+import { useEventDetailsSlug } from '@/service';
 import { useAuthStore } from '@/store';
 import { useFormatDate } from '@/utils/formatDate';
 import { useParams } from 'react-router-dom';
@@ -8,7 +8,7 @@ const useLogic = () => {
   const { user } = useAuthStore();
   const { slug } = useParams();
 
-  const { eventDetailsIsLoading, eventDetailsData, eventDetailsRefetch } = useEventDetails({
+  const { eventDetailsIsLoading, eventDetailsData, eventDetailsRefetch } = useEventDetailsSlug({
     slug: slug ?? '',
     enabled: !!slug,
   });

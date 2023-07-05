@@ -1,3 +1,4 @@
+import { BsFillShareFill } from 'react-icons/bs';
 import { styled } from 'styled-components';
 
 export const Cover = styled.div`
@@ -11,6 +12,7 @@ export const Image = styled.div<{ url: string }>`
   position: absolute;
 `;
 export const Content = styled.div`
+  position: relative;
   padding: 0px 10px;
   display: flex;
   flex-direction: column;
@@ -24,6 +26,14 @@ export const Content = styled.div`
     rgba(15, 17, 19, 1) 100%
   );
   width: 100%;
+`;
+export const ToShare = styled(BsFillShareFill)`
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 2rem;
+  height: auto;
+  color: #fff;
 `;
 export const MenuClosed = styled.div`
   display: flex;

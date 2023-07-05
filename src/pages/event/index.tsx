@@ -11,7 +11,9 @@ const Event = () => {
     <>
       <S.Cover>
         <S.Image url={coverUrl} />
+
         <S.Content>
+          <S.ToShare />
           <S.EventTitle>{eventDetailsData?.name}</S.EventTitle>
           <S.EventDate>{formattedDate}</S.EventDate>
           <S.EventEntranceFee>
