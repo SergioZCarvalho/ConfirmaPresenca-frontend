@@ -2,6 +2,7 @@ import { useEventDetailsSlug } from '@/service';
 import { useAuthStore } from '@/store';
 import { useFormatDate } from '@/utils/formatDate';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const useLogic = () => {
   const { dateWithRange } = useFormatDate();
@@ -18,12 +19,24 @@ const useLogic = () => {
     eventDetailsData?.endEvent ?? new Date(),
   );
 
+  const updateEventPhotos = async (eventPhotos: Array<string>) => {
+    try {
+      await axios.put('/api/event/update-photos', {
+        eventId: eventDetailsData?.id,
+        photos: eventPhotos,
+      });
+    } catch (error) {
+      console.error('Erro ao atualizar as fotos do evento:', error);
+    }
+  };
+
   return {
     eventDetailsIsLoading,
     eventDetailsData,
     eventDetailsRefetch,
     user,
     formattedDate,
+    updateEventPhotos,
   };
 };
 

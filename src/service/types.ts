@@ -35,6 +35,7 @@ export type Event = {
   slug: string;
   price: number;
   whatsapp: string;
+  photos: string[];
 };
 
 export type EventPopulated = Event & {

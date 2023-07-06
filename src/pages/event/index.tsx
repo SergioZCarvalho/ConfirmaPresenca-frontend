@@ -2,10 +2,17 @@ import { formatCurrency } from '@/utils/formatCurrency';
 import * as S from './styles';
 import useLogic from './useLogic';
 import InviteConfirm from '@/components/InviteConfirm';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 const Event = () => {
-  const { eventDetailsIsLoading, eventDetailsData, user, formattedDate } = useLogic();
+  const { eventDetailsIsLoading, eventDetailsData, user, formattedDate, updateEventPhotos } =
+    useLogic();
   const coverUrl = eventDetailsData?.cover || '';
+  const eventPhotos = eventDetailsData?.photos || [];
+  const carouselItems = eventPhotos.map((photo, index) => (
+    <S.EventPhoto key={index} url={photo} onClick={() => updateEventPhotos([photo])} />
+  ));
 
   return (
     <>
@@ -17,7 +24,7 @@ const Event = () => {
           <S.EventTitle>{eventDetailsData?.name}</S.EventTitle>
           <S.EventDate>{formattedDate}</S.EventDate>
           <S.EventEntranceFee>
-            <S.EntranceFeeText>preço da entrada:</S.EntranceFeeText>
+            <S.EntranceFeeText>Preço da entrada:</S.EntranceFeeText>
             <S.EntranceFeePrice>
               {eventDetailsData &&
                 (eventDetailsData.price || eventDetailsData.price === 0
@@ -44,6 +51,11 @@ const Event = () => {
           <S.ValueOfContact>{eventDetailsData?.whatsapp}</S.ValueOfContact>
         </S.Contact>
       </S.EventInformation>
+
+      <S.EventPhotos>
+        <Carousel>{carouselItems}</Carousel>
+      </S.EventPhotos>
+
       {!user && eventDetailsData && <InviteConfirm eventId={eventDetailsData?.id} />}
     </>
   );
