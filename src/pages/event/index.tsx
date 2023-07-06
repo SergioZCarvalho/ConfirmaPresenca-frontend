@@ -2,7 +2,6 @@ import { formatCurrency } from '@/utils/formatCurrency';
 import * as S from './styles';
 import useLogic from './useLogic';
 import InviteConfirm from '@/components/InviteConfirm';
-import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 const Event = () => {
@@ -10,9 +9,6 @@ const Event = () => {
     useLogic();
   const coverUrl = eventDetailsData?.cover || '';
   const eventPhotos = eventDetailsData?.photos || [];
-  const carouselItems = eventPhotos.map((photo, index) => (
-    <S.EventPhoto key={index} url={photo} onClick={() => updateEventPhotos([photo])} />
-  ));
 
   return (
     <>
@@ -53,7 +49,9 @@ const Event = () => {
       </S.EventInformation>
 
       <S.EventPhotos>
-        <Carousel>{carouselItems}</Carousel>
+        {eventPhotos.map((photo, index) => (
+          <S.EventPhoto key={index} url={photo} onClick={() => updateEventPhotos([photo])} />
+        ))}
       </S.EventPhotos>
 
       {!user && eventDetailsData && <InviteConfirm eventId={eventDetailsData?.id} />}

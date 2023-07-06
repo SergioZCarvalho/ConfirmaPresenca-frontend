@@ -108,32 +108,18 @@ export const ValueOfContact = styled.p`
 
 export const EventPhotos = styled.div`
   display: flex;
-  flex-wrap: wrap;
   margin-top: 20px;
-  overflow: hidden;
-
-  .carousel-root {
-    width: 100%;
-  }
-
-  .carousel.carousel-slider {
-    width: 100%;
-
-    .slider-wrapper {
-      overflow: hidden;
-    }
-
-    .slider {
-      display: flex;
-    }
-  }
+  flex-wrap: nowrap;
+  flex-direction: row;
+  overflow-x: scroll;
 `;
 
 export const EventPhoto = styled.div<{ url: string }>`
   background: url(${(props) => props.url}) no-repeat center;
   background-size: cover;
-  width: 200px;
+  width: 400px;
   height: 200px;
   margin-right: 10px;
   margin-bottom: 10px;
+  min-width: 200px;
 `;

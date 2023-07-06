@@ -94,6 +94,13 @@ const CreateEvent = () => {
           </S.Time>
 
           <S.Group controlId="formGridAddress">
+            <S.Label>Local do evento</S.Label>
+            <S.Control type="text" placeholder="nome do local " {...register('localName')} />
+            {errors.address && errors.address.message && (
+              <S.Error>{errors.address.message}</S.Error>
+            )}
+          </S.Group>
+          <S.Group controlId="formGridAddress">
             <S.Label>Endereço</S.Label>
             <S.Control type="text" placeholder="Endereço" {...register('address')} />
             {errors.address && errors.address.message && (

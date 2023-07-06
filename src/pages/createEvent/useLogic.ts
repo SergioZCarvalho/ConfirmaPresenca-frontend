@@ -71,6 +71,7 @@ const UseLogic = () => {
     price: Yup.number().nullable(),
     state: Yup.string().required(' o estado é obrigatório').nonNullable(),
     whatsapp: Yup.string().required(' o contato é obrigatório').nonNullable(),
+    localName: Yup.string().required(' o local é obrigatório').nonNullable(),
   });
 
   const {
@@ -95,6 +96,7 @@ const UseLogic = () => {
       startEventTime: '',
       endEventTime: '',
       whatsapp: '',
+      localName: '',
     },
     resolver: yupResolver(formSchema),
   });
