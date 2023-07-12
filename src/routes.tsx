@@ -23,6 +23,10 @@ export const routes: RouteObject[] = [
         path: '/auth/register',
         element: <HomePage />,
       },
+      {
+        path: '/auth/forget-password',
+        element: <HomePage />,
+      },
 
       {
         path: 'event/:slug',

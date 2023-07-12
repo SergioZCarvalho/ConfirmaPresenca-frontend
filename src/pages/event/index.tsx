@@ -9,6 +9,11 @@ const Event = () => {
     useLogic();
   const coverUrl = eventDetailsData?.cover || '';
   const eventPhotos = eventDetailsData?.photos || [];
+  const share = () =>
+    navigator.share({
+      title: eventDetailsData?.name,
+      url: 'https://confirmapresenca.com.br/event/' + eventDetailsData?.slug,
+    });
 
   return (
     <>
@@ -16,7 +21,7 @@ const Event = () => {
         <S.Image url={coverUrl} />
 
         <S.Content>
-          <S.ToShare />
+          <S.ToShare onClick={share} />
           <S.EventTitle>{eventDetailsData?.name}</S.EventTitle>
           <S.EventDate>{formattedDate}</S.EventDate>
           <S.EventEntranceFee>

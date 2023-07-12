@@ -5,21 +5,24 @@ import Register from './register';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
+import ForgetPassword from './forgetPassword';
 
 const Auth = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
+  const [isForget, setIsForget] = useState(false);
   const [isVisible, setIsVisible] = useState(0);
 
   useEffect(() => {
     setIsLogin(pathname === '/auth');
     setIsRegister(pathname === '/auth/register');
+    setIsForget(pathname === '/auth/forget-password');
     setIsVisible(1);
   }, [pathname]);
 
-  return isLogin || isRegister ? (
+  return isLogin || isRegister || isForget ? (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: isVisible }}
@@ -40,6 +43,7 @@ const Auth = () => {
         </S.Header>
         {isLogin && <Login />}
         {isRegister && <Register />}
+        {isForget && <ForgetPassword />}
       </S.AuthContainer>
     </motion.div>
   ) : (

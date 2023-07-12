@@ -2,7 +2,7 @@ import * as S from './styles';
 
 interface ButtonProps {
   text: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
   color?: 'primary' | 'secondary' | 'danger';
 }
 
@@ -30,7 +30,13 @@ const ButtonComponent = ({
     },
   };
   return (
-    <S.GenericButton {...props} {...colorObj[color]} onClick={onClick}>
+    <S.GenericButton
+      {...props}
+      {...colorObj[color]}
+      onClick={(e: React.MouseEvent<HTMLElement>) => {
+        onClick && onClick(e);
+      }}
+    >
       {text}
     </S.GenericButton>
   );

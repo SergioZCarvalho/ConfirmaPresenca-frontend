@@ -18,7 +18,7 @@ export const useAxios = () => {
       return response;
     },
     (error) => {
-      toast('Ocorreu um erro');
+      if (error.response?.status !== 400) toast('Ocorreu um erro');
       return Promise.reject(error);
     },
   );

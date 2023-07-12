@@ -1,6 +1,8 @@
 //auth
 export const USER_LOGIN_KEY = 'userLoginKey';
 export const USER_REGISTER_KEY = 'userRegisterKey';
+export const USER_SEND_EMAIL_KEY = 'userSendEmailKey';
+export const USER_SEND_CODE_KEY = 'userSendCodeKey';
 
 //event
 export const USER_CREATE_EVENT_KEY = 'userCreateEventKey';
@@ -18,6 +20,8 @@ export const USER_CONFIRM_EVENT_KEY = 'userConfirmEventKey';
 const auth = {
   user: () => '/user',
   userLogin: () => `/user/login`,
+  userSendEmail: () => `/user/send-email`,
+  userSendCode: () => `/user/send-code`,
 };
 
 const event = {

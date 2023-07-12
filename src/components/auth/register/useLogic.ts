@@ -18,15 +18,15 @@ const UseLogic = () => {
   const { setUser, setToken } = useAuthStore();
 
   const formSchema = Yup.object().shape({
-    name: Yup.string().required(' o user usuario é obrigatário'),
+    name: Yup.string().required(' o user usuario é obrigatório'),
     password: Yup.string()
-      .required(' a senha é obrigatária')
+      .required(' a senha é obrigatória')
       .min(6, ' a senha deve ter no minimo 6 caracteres'),
     confirmPassword: Yup.string().oneOf(
       [Yup.ref('password'), undefined],
       ' as senhas não conferem',
     ),
-    email: Yup.string().required(' o email é obrigatário').email(' o email deve ser válido'),
+    email: Yup.string().required(' o email é obrigatório').email(' o email deve ser válido'),
   });
 
   const {

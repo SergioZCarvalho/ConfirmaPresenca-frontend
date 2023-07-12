@@ -21,7 +21,7 @@ const Login = () => {
 
         <S.links>
           <S.linkText>se esqueceu sua senha</S.linkText>
-          <S.linkRouter to="/auth/register">clique aqui</S.linkRouter>
+          <S.linkRouter to="/auth/forget-password">clique aqui</S.linkRouter>
         </S.links>
 
         <ButtonComponent type="submit" text={'Entrar'}></ButtonComponent>

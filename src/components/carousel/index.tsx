@@ -9,18 +9,18 @@ const CarouselComponent = () => {
       id: 1,
       image: '/carousel-1.svg',
     },
-    // {
-    //   title: 'COMPARTILHAMENTO FÁCIL',
-    //   text: 'Compartilhe suas informações com seus amigos e familiares.',
-    //   id: 2,
-    //   image: '/carousel-2.svg',
-    // },
-    // {
-    //   title: 'CONVITES PERSONALIZADOS',
-    //   text: 'Crie convites virtuais personalizados e criativos para o seu evento.',
-    //   id: 3,
-    //   image: '/carousel-3.svg',
-    // },
+    {
+      title: 'COMPARTILHAMENTO FÁCIL',
+      text: 'Compartilhe suas informações com seus amigos e familiares.',
+      id: 2,
+      image: '/carousel-2.svg',
+    },
+    {
+      title: 'CONVITES PERSONALIZADOS',
+      text: 'Crie convites virtuais personalizados e criativos para o seu evento.',
+      id: 3,
+      image: '/carousel-3.svg',
+    },
   ];
   return (
     <S.CarouselStyle fade={true} controls={false} indicators={false}>

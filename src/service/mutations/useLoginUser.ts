@@ -29,6 +29,9 @@ export const useLoginUser = ({ ...options }: UseLoginUserParam) => {
         options.onSuccess?.(data, variables, context);
         toast('Usuário logado');
       },
+      onError(error) {
+        if (error.response?.status === 400) toast('Usuário não encontrado');
+      },
     },
   );
 
