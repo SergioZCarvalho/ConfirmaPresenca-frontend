@@ -11,9 +11,10 @@ type FormData = {
 
 export type Props = {
   eventId: string;
+  handleCloseModal: () => void;
 };
 
-const useLogic = ({ eventId }: Props) => {
+const useLogic = ({ eventId, handleCloseModal }: Props) => {
   const [acceptedState, setAcceptedState] = useState<'ACCEPTED' | 'DENIED' | 'NONE'>('NONE');
   const formSchema = Yup.object().shape({
     name: Yup.string().required(' o nome é obrigatório'),
@@ -68,14 +69,10 @@ const useLogic = ({ eventId }: Props) => {
   return {
     register,
     handleSubmit,
-    errors,
-    setValue,
-    getValues,
-    confirmEventIsLoading,
-    confirmEventMutate,
     onAcceptSubmit,
     onDenySubmit,
     acceptedState,
+    handleCloseModal,
   };
 };
 

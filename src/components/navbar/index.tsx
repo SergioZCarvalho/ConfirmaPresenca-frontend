@@ -5,6 +5,7 @@ import Auth from '../auth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store';
+import { deviceSize } from '@/utils/device';
 
 const NavbarComponent = () => {
   const navigate = useNavigate();
@@ -24,21 +25,35 @@ const NavbarComponent = () => {
     }
   };
 
+  const shouldRenderNavLinks = user && window.innerWidth > deviceSize.tablet;
+
   return (
     <>
       {load && (
         <Navbar>
           <S.NavCont fluid>
-            <Navbar.Brand href="/">
-              <S.NavImage width={500} height={145} src="/logo.png" alt="" />
-            </Navbar.Brand>
+            <S.Brand>
+              <S.NavImage
+                width={500}
+                height={145}
+                src="/logo.png"
+                alt=""
+                onClick={() => navigate('/')}
+              />
+              {shouldRenderNavLinks && (
+                <S.NavbarButton>
+                  <S.NavbarMyEvents onClick={() => navigate('/my-events')}>
+                    meus eventos
+                  </S.NavbarMyEvents>
+                  <S.NavbarCreateEvents onClick={() => navigate('/create-event')}>
+                    criar eventos
+                  </S.NavbarCreateEvents>
+                </S.NavbarButton>
+              )}
+            </S.Brand>
+
             <Navbar.Text>
-              <ButtonComponent
-                text={user ? 'Sair' : 'Entrar'}
-                onClick={() => {
-                  handleLoginClick();
-                }}
-              ></ButtonComponent>
+              <ButtonComponent text={user ? 'Sair' : 'Entrar'} onClick={handleLoginClick} />
             </Navbar.Text>
           </S.NavCont>
         </Navbar>

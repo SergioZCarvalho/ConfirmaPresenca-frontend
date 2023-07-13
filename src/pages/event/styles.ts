@@ -1,3 +1,4 @@
+import { device } from '@/utils/device';
 import { BsFillShareFill } from 'react-icons/bs';
 import styled from 'styled-components';
 
@@ -77,6 +78,7 @@ export const EventInformation = styled.div``;
 export const EventInformationTitle = styled.p`
   color: #ffffff;
   font-size: 1.5rem;
+  padding-top: 10px;
   padding-bottom: 10px;
   padding-left: 5px;
 `;
@@ -122,4 +124,16 @@ export const EventPhoto = styled.div<{ url: string }>`
   margin-right: 10px;
   margin-bottom: 10px;
   min-width: 200px;
+`;
+
+export const Card = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const Information = styled.div`
+  @media ${device.tablet} {
+    margin: 0px 100px;
+  }
 `;

@@ -1,3 +1,4 @@
+import { device } from '@/utils/device';
 import { Form, Row } from 'react-bootstrap';
 import { styled } from 'styled-components';
 
@@ -5,6 +6,10 @@ export const Container = styled.div`
   padding: 20px 20px 30px 40px;
   display: flex;
   flex-direction: column;
+
+  @media ${device.tablet} {
+    margin: 20px 60px 30px 60px;
+  }
 `;
 
 export const Time = styled(Row)`
@@ -34,6 +39,7 @@ export const File = styled.input``;
 
 export const Control = styled(Form.Control)`
   width: 100%;
+  margin-top: 10px;
   color-scheme: dark;
   background-color: #424263;
   border: none;

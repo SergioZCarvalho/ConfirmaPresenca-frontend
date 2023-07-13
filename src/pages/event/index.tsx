@@ -3,17 +3,21 @@ import * as S from './styles';
 import useLogic from './useLogic';
 import InviteConfirm from '@/components/InviteConfirm';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import ButtonComponent from '@/components/button';
 
 const Event = () => {
-  const { eventDetailsIsLoading, eventDetailsData, user, formattedDate, updateEventPhotos } =
-    useLogic();
-  const coverUrl = eventDetailsData?.cover || '';
-  const eventPhotos = eventDetailsData?.photos || [];
-  const share = () =>
-    navigator.share({
-      title: eventDetailsData?.name,
-      url: 'https://confirmapresenca.com.br/event/' + eventDetailsData?.slug,
-    });
+  const {
+    eventDetailsData,
+    user,
+    formattedDate,
+    updateEventPhotos,
+    handleToggleInviteConfirm,
+    coverUrl,
+    eventPhotos,
+    share,
+    isOpenConfirmModal,
+    handleCloseModal,
+  } = useLogic();
 
   return (
     <>
@@ -35,31 +39,44 @@ const Event = () => {
           </S.EventEntranceFee>
         </S.Content>
       </S.Cover>
-      <S.EventInformation>
-        <S.EventInformationTitle>Endereço</S.EventInformationTitle>
-        <S.EventInformationValue>{eventDetailsData?.address}</S.EventInformationValue>
-      </S.EventInformation>
-      <S.EventInformation>
-        <S.EventInformationTitle>Local</S.EventInformationTitle>
-        <S.EventInformationValue>
-          {eventDetailsData?.city} / {eventDetailsData?.state}
-        </S.EventInformationValue>
-      </S.EventInformation>
-      <S.EventInformation>
-        <S.EventInformationTitle>Contato</S.EventInformationTitle>
-        <S.Contact>
-          <S.TypeOfContact>Telefone:</S.TypeOfContact>
-          <S.ValueOfContact>{eventDetailsData?.whatsapp}</S.ValueOfContact>
-        </S.Contact>
-      </S.EventInformation>
+      <S.Information>
+        <S.EventInformation>
+          <S.EventInformationTitle>Descrição do evento</S.EventInformationTitle>
+          <S.EventInformationValue>{eventDetailsData?.description}</S.EventInformationValue>
+        </S.EventInformation>
+        <S.EventInformation>
+          <S.EventInformationTitle>Endereço</S.EventInformationTitle>
+          <S.EventInformationValue>
+            {eventDetailsData?.localName}: <br /> {eventDetailsData?.address},{' '}
+            {eventDetailsData?.number} -{eventDetailsData?.city}/{eventDetailsData?.state} -{' '}
+            {eventDetailsData?.zipCode}
+          </S.EventInformationValue>
+          <S.EventPhotos>
+            {eventPhotos.map((photo, index) => (
+              <S.EventPhoto key={index} url={photo} onClick={() => updateEventPhotos([photo])} />
+            ))}
+          </S.EventPhotos>
+        </S.EventInformation>
+        <S.EventInformation>
+          <S.EventInformationTitle>Contato</S.EventInformationTitle>
+          <S.Contact>
+            <S.TypeOfContact>Telefone:</S.TypeOfContact>
+            <S.ValueOfContact>{eventDetailsData?.whatsapp}</S.ValueOfContact>
+          </S.Contact>
+        </S.EventInformation>
 
-      <S.EventPhotos>
-        {eventPhotos.map((photo, index) => (
-          <S.EventPhoto key={index} url={photo} onClick={() => updateEventPhotos([photo])} />
-        ))}
-      </S.EventPhotos>
-
-      {!user && eventDetailsData && <InviteConfirm eventId={eventDetailsData?.id} />}
+        {!user && eventDetailsData && (
+          <S.Card>
+            <ButtonComponent
+              text={'Confirmar ou Recusar presença'}
+              onClick={handleToggleInviteConfirm}
+            ></ButtonComponent>
+            {isOpenConfirmModal && (
+              <InviteConfirm handleCloseModal={handleCloseModal} eventId={eventDetailsData?.id} />
+            )}
+          </S.Card>
+        )}
+      </S.Information>
     </>
   );
 };

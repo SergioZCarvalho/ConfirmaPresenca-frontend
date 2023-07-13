@@ -3,11 +3,13 @@ import { useAuthStore } from '@/store';
 import { useFormatDate } from '@/utils/formatDate';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useState } from 'react';
 
 const useLogic = () => {
   const { dateWithRange } = useFormatDate();
   const { user } = useAuthStore();
   const { slug } = useParams();
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
 
   const { eventDetailsIsLoading, eventDetailsData, eventDetailsRefetch } = useEventDetailsSlug({
     slug: slug ?? '',
@@ -30,13 +32,34 @@ const useLogic = () => {
     }
   };
 
+  const handleToggleInviteConfirm = () => {
+    setIsOpenConfirmModal(!isOpenConfirmModal);
+  };
+
+  const coverUrl = eventDetailsData?.cover || '';
+  const eventPhotos = eventDetailsData?.photos || [];
+
+  const share = () =>
+    navigator.share({
+      title: eventDetailsData?.name,
+      url: 'https://confirmapresenca.com.br/event/' + eventDetailsData?.slug,
+    });
+
+  const handleCloseModal = () => {
+    setIsOpenConfirmModal(false);
+  };
+
   return {
-    eventDetailsIsLoading,
     eventDetailsData,
-    eventDetailsRefetch,
     user,
     formattedDate,
     updateEventPhotos,
+    handleToggleInviteConfirm,
+    coverUrl,
+    eventPhotos,
+    share,
+    isOpenConfirmModal,
+    handleCloseModal,
   };
 };
 

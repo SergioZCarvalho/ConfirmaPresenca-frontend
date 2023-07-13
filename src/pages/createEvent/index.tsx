@@ -26,7 +26,10 @@ const CreateEvent = () => {
         <S.FormContainer onSubmit={handleSubmit(onSubmit)}>
           <S.Group controlId="formGridImage">
             <S.Label>Imagem de Capa</S.Label>
-            {currentImage && <img src={currentImage} alt="" />}
+            <div>
+              {currentImage && <img width="200px" height="100%" src={currentImage} alt="" />}
+            </div>
+
             <S.Control
               type="file"
               as="input"

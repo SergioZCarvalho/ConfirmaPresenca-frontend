@@ -1,4 +1,4 @@
-import { Form } from 'react-bootstrap';
+import { Alert, CloseButton, Form } from 'react-bootstrap';
 import { styled } from 'styled-components';
 
 export const Container = styled.div`
@@ -101,4 +101,14 @@ export const Control = styled(Form.Control)`
     box-shadow: 0 0 0 1.5px rgb(3 190 102);
     outline: none;
   }
+`;
+
+export const Close = styled(CloseButton)`
+  margin-left: auto;
+`;
+
+export const CustomAlert = styled(Alert)`
+  --bs-alert-color: #198754;
+  --bs-alert-bg: #2c2c41;
+  --bs-alert-border-color: #2c2c41;
 `;

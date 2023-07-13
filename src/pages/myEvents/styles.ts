@@ -1,3 +1,4 @@
+import { device } from '@/utils/device';
 import { Offcanvas } from 'react-bootstrap';
 import { Menu } from 'react-contexify';
 import { FiMoreHorizontal } from 'react-icons/fi';
@@ -12,6 +13,9 @@ export const Container = styled.div`
   padding: 10px;
   border-radius: 15px;
   gap: 8px;
+  @media ${device.tablet} {
+    margin: 10px 100px;
+  }
 `;
 export const Image = styled.div<{ url: string }>`
   background: url(${(props) => props.url}) no-repeat center;

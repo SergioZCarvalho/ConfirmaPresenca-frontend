@@ -32,7 +32,12 @@ const event = {
   eventConfirms: ({ id }: { id: string }) => `/event/${id}/confirms`,
 };
 
+const confirm = {
+  confirm: () => `/confirm`,
+};
+
 export const Endpoints = {
   ...auth,
   ...event,
+  ...confirm,
 };

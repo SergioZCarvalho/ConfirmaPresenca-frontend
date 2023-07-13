@@ -19,4 +19,8 @@ export const GenericButton = styled(Button)<{
   --bs-btn-hover-color: ${(props) => props.colorText};
   --bs-btn-hover-bg: ${(props) => props.colorAction};
   --bs-btn-hover-border-color: ${(props) => props.colorAction};
+
+  --bs-btn-disabled-color: #02be67;
+  --bs-btn-disabled-bg: #060c21;
+  --bs-btn-disabled-border-color: #02be67;
 `;

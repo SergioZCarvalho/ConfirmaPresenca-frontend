@@ -1,4 +1,3 @@
-import { Alert } from 'react-bootstrap';
 import * as S from './styles';
 import useLogic, { Props } from './useLogic';
 
@@ -6,20 +5,20 @@ const InviteConfirm = (props: Props) => {
   const {
     register,
     handleSubmit,
-    errors,
-    setValue,
-    getValues,
-    confirmEventIsLoading,
-    confirmEventMutate,
+
     onAcceptSubmit,
     onDenySubmit,
     acceptedState,
+    handleCloseModal,
   } = useLogic(props);
+
   return (
     <>
       <div id="expanded"></div>
       <div>
         <S.Container id="invite">
+          <S.Close onClick={handleCloseModal}></S.Close>
+
           <S.Text>Confirme sua presença no evento</S.Text>
           <S.FormContainer>
             <S.Group controlId="formGridName">
@@ -31,11 +30,11 @@ const InviteConfirm = (props: Props) => {
               <S.Control type="email" placeholder="Insira seu email" {...register('email')} />
             </S.Group>
             {acceptedState !== 'NONE' && (
-              <Alert variant="info">
+              <S.CustomAlert variant="info">
                 {acceptedState === 'ACCEPTED'
                   ? 'Presença confirmada com sucesso!'
                   : 'Você recusou o convite!'}
-              </Alert>
+              </S.CustomAlert>
             )}
           </S.FormContainer>
           <S.Buttons>
