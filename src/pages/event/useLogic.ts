@@ -1,7 +1,7 @@
 import { useEventDetailsSlug } from '@/service';
 import { useAuthStore } from '@/store';
 import { useFormatDate } from '@/utils/formatDate';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useState } from 'react';
 
@@ -10,10 +10,19 @@ const useLogic = () => {
   const { user } = useAuthStore();
   const { slug } = useParams();
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
+  const [isNotFound, setIsNotFound] = useState(false);
+  const navigate = useNavigate();
 
   const { eventDetailsIsLoading, eventDetailsData, eventDetailsRefetch } = useEventDetailsSlug({
     slug: slug ?? '',
     enabled: !!slug,
+    onError(err) {
+      if (err.response?.status === 404) setIsNotFound(true);
+    },
+    retry(failureCount, err) {
+      if (err.response?.status === 404) return false;
+      return true;
+    },
   });
 
   const formattedDate = dateWithRange(
@@ -60,6 +69,8 @@ const useLogic = () => {
     share,
     isOpenConfirmModal,
     handleCloseModal,
+    isNotFound,
+    navigate,
   };
 };
 

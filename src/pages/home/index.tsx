@@ -3,6 +3,7 @@ import * as S from './styles';
 import ButtonComponent from '@/components/button';
 import StepsComponent from '@/components/steps';
 import { useNavigate } from 'react-router-dom';
+import FooterComponent from '@/components/footer';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const HomePage = () => {
       </S.Header>
       <CarouselComponent />
       <StepsComponent></StepsComponent>
+      <FooterComponent />
     </S.Container>
   );
 };

@@ -17,7 +17,17 @@ const Event = () => {
     share,
     isOpenConfirmModal,
     handleCloseModal,
+    isNotFound,
+    navigate,
   } = useLogic();
+
+  if (isNotFound)
+    return (
+      <S.NotFound>
+        <S.Message>Este evento não foi encontrado</S.Message>
+        <ButtonComponent text={'Votar para home'} onClick={() => navigate('/')} />
+      </S.NotFound>
+    );
 
   return (
     <>

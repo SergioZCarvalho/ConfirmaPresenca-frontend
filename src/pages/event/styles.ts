@@ -138,3 +138,21 @@ export const Information = styled.div`
     margin: 0px 100px;
   }
 `;
+
+export const NotFound = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 25rem;
+  @media ${device.tablet} {
+    margin-top: 10rem;
+  }
+`;
+
+export const Message = styled.div`
+  margin-bottom: 20px;
+  margin-top: 10px;
+  font-size: 2rem;
+  color: #fff;
+`;

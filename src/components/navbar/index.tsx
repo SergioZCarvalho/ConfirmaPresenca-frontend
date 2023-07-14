@@ -46,7 +46,7 @@ const NavbarComponent = () => {
                     meus eventos
                   </S.NavbarMyEvents>
                   <S.NavbarCreateEvents onClick={() => navigate('/create-event')}>
-                    criar eventos
+                    criar evento
                   </S.NavbarCreateEvents>
                 </S.NavbarButton>
               )}
