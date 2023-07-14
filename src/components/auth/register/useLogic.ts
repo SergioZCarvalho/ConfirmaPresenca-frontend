@@ -4,13 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-
-type FormData = {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
+import { InferType } from 'yup';
 
 const UseLogic = () => {
   const navigate = useNavigate();
@@ -33,7 +27,7 @@ const UseLogic = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm({
     defaultValues: {
       name: '',
       password: '',
@@ -51,7 +45,7 @@ const UseLogic = () => {
     },
   });
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: InferType<typeof formSchema>) => {
     registerUserMutate({
       ...data,
     });
