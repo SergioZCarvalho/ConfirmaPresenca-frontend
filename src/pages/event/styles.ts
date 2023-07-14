@@ -88,6 +88,7 @@ export const EventInformationValue = styled.p`
   font-size: 1rem;
   padding-bottom: 10px;
   padding-left: 5px;
+  white-space: pre-wrap;
 `;
 
 export const Contact = styled.div`

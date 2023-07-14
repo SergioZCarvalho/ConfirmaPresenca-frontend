@@ -25,6 +25,10 @@ export const CarouselCaption = styled(Carousel.Caption)`
     padding-top: 4rem;
     margin-left: 15rem;
   }
+  @media ${device.laptopL} {
+    padding-top: 4rem;
+    margin-left: 30rem;
+  }
 `;
 
 export const Title = styled.p`

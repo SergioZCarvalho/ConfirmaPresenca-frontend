@@ -8,7 +8,7 @@ export const Container = styled.div`
   flex-direction: column;
 
   @media ${device.tablet} {
-    margin: 20px 60px 30px 60px;
+    margin: 20px 150px 30px 150px;
   }
 `;
 
