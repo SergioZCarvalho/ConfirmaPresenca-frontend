@@ -75,7 +75,7 @@ const Event = () => {
           </S.Contact>
         </S.EventInformation>
 
-        {!user && eventDetailsData && (
+        {eventDetailsData && (
           <S.Card>
             <ButtonComponent
               text={'Confirmar ou Recusar presença'}

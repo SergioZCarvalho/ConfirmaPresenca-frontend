@@ -144,14 +144,16 @@ const UseLogic = () => {
   });
 
   const onSubmit = (data: InferType<typeof formSchema>) => {
+    const currentUTCDate = new Date();
+    const timezoneOffsetMinutes = currentUTCDate.getTimezoneOffset();
     const buildStartMinutes =
       Number(data.startEventTime?.split(':')[0]) * 60 + Number(data.startEventTime?.split(':')[1]);
     const buildEndMinutes =
       Number(data.endEventTime?.split(':')[0]) * 60 + Number(data.endEventTime?.split(':')[1]);
     const startEvent = new Date(data.startEvent as Date);
-    startEvent.setMinutes(buildStartMinutes);
+    startEvent.setMinutes(buildStartMinutes + timezoneOffsetMinutes);
     const endEvent = new Date((data.endEvent as Date) || (data.startEvent as Date));
-    endEvent.setMinutes(buildEndMinutes);
+    endEvent.setMinutes(buildEndMinutes + timezoneOffsetMinutes);
     createEventMutate({
       ...data,
       startEvent: startEvent,

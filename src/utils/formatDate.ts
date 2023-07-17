@@ -6,13 +6,13 @@ export const useFormatDate = () => {
     if (!initialDate || !endDate) {
       return '';
     }
-    const formattedInitial = format(new Date(initialDate), 'dd MMM yyyy HH:MM', {
+    const formattedInitial = format(new Date(initialDate), 'dd MMM yyyy HH:mm', {
       locale: ptBR,
     });
-    const formattedEnd = format(new Date(endDate), 'dd MMM yyyy HH:MM', {
+    const formattedEnd = format(new Date(endDate), 'dd MMM yyyy HH:mm', {
       locale: ptBR,
     });
-    const formattedEndOnlyHour = format(new Date(endDate), 'HH:MM', {
+    const formattedEndOnlyHour = format(new Date(endDate), 'HH:mm', {
       locale: ptBR,
     });
     if (isSameDay(new Date(initialDate), new Date(endDate))) {

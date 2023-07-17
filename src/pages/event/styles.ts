@@ -129,11 +129,13 @@ export const EventPhoto = styled.div<{ url: string }>`
 
 export const Card = styled.div`
   display: flex;
+  margin-bottom: 50px;
   justify-content: center;
   align-items: center;
 `;
 
 export const Information = styled.div`
+  margin: 0px 20px;
   @media ${device.tablet} {
     margin: 0px 100px;
   }
