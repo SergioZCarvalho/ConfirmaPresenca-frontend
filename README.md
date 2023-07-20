@@ -1,4 +1,4 @@
-# Confirma Presnça
+# Confirma Presença
 
 
 <p float="left">
@@ -57,5 +57,20 @@ to install follow this steps:
 
 <br>
 
+4. to run this project execute on terminal:
+
+ Using npm:
+```
+ npm run dev
+
+```
+
+<br>
+
+ Using yarn:
+```
+ yarn run dev
+
+```
 
 
